@@ -1,0 +1,18 @@
+---
+- hosts: munin-nodes
+  vars:
+    munin_node_plugins_remove:
+      - nfsd
+      - nfsd4
+      - postfix_mailqueue
+      - postfix_mailvolume
+  tasks:
+  - name: "Remove munin node plugins"
+    file:
+      path: "/etc/munin/plugins/{{ item }}"
+      state: absent
+    with_items: 
+      - "{{ munin_node_plugins_remove }}"
+    
+  - name: restart munin-node
+    service: name=munin-node state=restarted
