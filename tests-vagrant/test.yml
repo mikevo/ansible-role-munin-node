@@ -1,4 +1,16 @@
 ---
+- hosts: all
+  tasks:  
+    - name: Install firewalld
+      package:
+        pkg: firewalld
+        state: installed
+    - name: enable firewalld
+      service:
+        name: firewalld
+        state: started
+        enabled: yes
+  
 - hosts: ansible-munin-node
 
   vars:

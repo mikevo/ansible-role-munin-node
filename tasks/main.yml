@@ -38,3 +38,13 @@
 
 - name: Ensure munin-node is running.
   service: name=munin-node state=started enabled=yes
+  
+- name: Make sure traffic can pass through firewall
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ munin_node_bind_port }}/tcp"
+  notify:
+    - restart firewalld
