@@ -1,4 +1,6 @@
 ---
+root_group: root
+
 munin_node_bind_host: "*"
 munin_node_bind_port: "4949"
 
@@ -12,6 +14,9 @@ munin_node_allowed_ips:
 # Source and destination of munin plugins.
 munin_plugin_src_path: /usr/share/munin/plugins/
 munin_plugin_dest_path: /etc/munin/plugins/
+
+munin_node_config_file: /etc/munin/munin-node.conf
+munin_plugin_config_file: /etc/munin/plugin-conf.d/ansible.conf
 
 # List of munin plugins to enable.
 munin_node_plugins: []

@@ -10,21 +10,25 @@
   apt: name=munin-node state=installed
   when: ansible_os_family == 'Debian'
 
+- name: Ensure munin-node is installed (FreeBSD).
+  package: name=munin-node state=present
+  when: ansible_os_family == 'FreeBSD'
+
 - name: Copy munin-node configuration.
   template:
     src: munin-node.conf.j2
-    dest: /etc/munin/munin-node.conf
+    dest: "{{ munin_node_config_file }}"
     owner: root
-    group: root
+    group: "{{ root_group }}"
     mode: 0644
   notify: restart munin-node
 
 - name: Generate plugin configuration.
   template:
     src: plugin-conf.j2
-    dest: /etc/munin/plugin-conf.d/ansible.conf
+    dest: "{{ munin_plugin_config_file }}"
     owner: root
-    group: root
+    group: "{{ root_group }}"
     mode: 0644
   notify: restart munin-node
 
@@ -46,5 +50,6 @@
     state: enabled
   with_items:
     - "{{ munin_node_bind_port }}/tcp"
+  when: not ansible_os_family == 'FreeBSD'
   notify:
     - restart firewalld
