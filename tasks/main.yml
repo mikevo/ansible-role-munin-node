@@ -40,8 +40,11 @@
   with_items: "{{ munin_node_plugins }}"
   notify: restart munin-node
 
-- name: Ensure munin-node is running.
-  service: name=munin-node state=started enabled=yes
+- name: Ensure munin-node is started.
+  service:
+    name: munin-node
+    state: started
+    enabled: yes
   
 - name: Make sure traffic can pass through firewall
   firewalld:
