@@ -46,13 +46,20 @@
     state: started
     enabled: yes
   
-- name: Make sure traffic can pass through firewall
+- name: Make sure traffic can pass through firewall (RedHat)
   firewalld:
-    port: "{{ item }}"
+    port: "{{ munin_node_bind_port }}/tcp"
     permanent: true
     state: enabled
-  with_items:
-    - "{{ munin_node_bind_port }}/tcp"
-  when: not ansible_os_family == 'FreeBSD'
+  when: ansible_os_family == 'RedHat'
+  notify:
+    - restart firewalld
+    
+- name: Make sure traffic can pass through firewall (Debian)
+  ufw:
+    rule: allow
+    port: "{{ munin_node_bind_port }}"
+    proto: tcp
+  when: ansible_os_family == 'Debian'
   notify:
     - restart firewalld
