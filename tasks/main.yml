@@ -7,7 +7,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Ensure munin-node is installed (Debian).
-  apt: name=munin-node state=installed
+  apt: name=munin-node state=present
   when: ansible_os_family == 'Debian'
 
 - name: Ensure munin-node is installed (FreeBSD).
@@ -45,21 +45,12 @@
     name: munin-node
     state: started
     enabled: yes
-  
-- name: Make sure traffic can pass through firewall (RedHat)
+
+- name: Make sure traffic can pass through firewall
   firewalld:
     port: "{{ munin_node_bind_port }}/tcp"
     permanent: true
     state: enabled
-  when: ansible_os_family == 'RedHat'
-  notify:
-    - restart firewalld
-    
-- name: Make sure traffic can pass through firewall (Debian)
-  ufw:
-    rule: allow
-    port: "{{ munin_node_bind_port }}"
-    proto: tcp
-  when: ansible_os_family == 'Debian'
+  when: (ansible_os_family == 'RedHat') or (ansible_os_family == 'Debian')
   notify:
     - restart firewalld
