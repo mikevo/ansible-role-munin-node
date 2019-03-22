@@ -27,5 +27,5 @@
     }
 
   roles:
-    - repo-epel
+    - geerlingguy.repo-epel
     - munin-node
