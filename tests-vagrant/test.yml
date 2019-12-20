@@ -1,6 +1,6 @@
 ---
 - hosts: all
-  tasks:  
+  tasks:
     - name: Install firewalld
       package:
         pkg: firewalld
@@ -10,7 +10,7 @@
         name: firewalld
         state: started
         enabled: yes
-  
+
 - hosts: ansible-munin-node
 
   vars:
@@ -19,12 +19,8 @@
       - name: if_eth1
         plugin: if_
 
-    munin_node_config: {
-       "ps_test": {
-         "env.regex": "bash",
-         "env.name": "bash"
-       }
-    }
+    munin_node_config:
+      { 'ps_test': { 'env.regex': 'bash', 'env.name': 'bash' } }
 
   roles:
     - geerlingguy.repo-epel

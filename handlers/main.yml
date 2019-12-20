@@ -4,5 +4,5 @@
 
 - name: restart firewalld
   service:
-    name: "{{ firewall_service }}"
+    name: '{{ firewall_service }}'
     state: restarted
